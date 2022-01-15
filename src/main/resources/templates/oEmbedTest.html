@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="css/container.css"/>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        function dtt() {
+            $.ajax({
+                type: "get",
+                url: "/search",
+                data: {
+                    url: $("#input_link").val()
+                },
+                dataType: "text",
+                contentType: "application/text",
+                error: [function () {
+                    $('#containerDiv').empty();
+                    $('#containerDiv').append("오류가 났습니다.");
+                }]
+            })
+                .done(function (fragment) {
+                    output(fragment);
+                })
+        }
+
+        function output(data) {
+            let obj  = JSON.parse(data);
+            console.log(Object.keys(obj).length);
+            $('#containerDiv').empty();
+            let str = "";
+            str += "<div class='contentDiv'>" + "<div class='column'>title</div>" + "<div id='title' class='value'>" + obj.title + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>type</div>" + "<div class='value'>" + obj.type + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>version</div>" + "<div class='value'>" + obj.version + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>provider_name</div>" + "<div class='value'>" + obj.provider_name + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>provider_url</div>" + "<div class='value'><a href='" + obj.provider_url + "'>" + obj.provider_url + "</a></div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>author_name</div>" + "<div class='value'>" + obj.author_name + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>author_url</div>" + "<div class='value'><a href='" + obj.author_url + "'>" + obj.author_url + "</a></div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>is_plus</div>" + "<div class='value'>" + obj.is_plus + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>html<br/>(" + obj.width + "/" + obj.height + ")</div>" + "<div class='value'>" + "<xmp>" + obj.html + "</xmp>" + obj.html + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>width</div>" + "<div class='value'>" + obj.width + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>height</div>" + "<div class='value'>" + obj.height + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>duration</div>" + "<div class='value'>" + obj.duration + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>description</div>" + "<div class='value'>" + obj.description + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_url<br/>(" + obj.thumbnail_width + "x" + obj.thumbnail_height + ")</div>" + "<div class='value'>" + "<a href='" + obj.thumbnail_url + "'>" + obj.thumbnail_url + "</a>" + "<img src='" +obj.thumbnail_url+ "'/>" + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_width</div>" + "<div class='value'>" + obj.thumbnail_width + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>thumbnail_height</div>" + "<div class='value'>" + obj.thumbnail_height + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>thubmnail_url_with_play_button</div>" + "<div class='value'>" + "<a href='" + obj.thumbnail_url_with_play_button + "'>" + obj.thumbnail_url_with_play_button + "</a>" + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>upload_date</div>" + "<div class='value'>" + obj.upload_date + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>video_id</div>" + "<div class='value'>" + obj.video_id + "</div>" + "</div>"
+            str += "<div class='contentDiv'>" + "<div class='column'>uri</div>" + "<div class='value'>" + obj.uri + "</div>" + "</div>"
+
+            $('#containerDiv').append(str);
+        }
+    </script>
+</head>
+<body>
+<div id="layout">
+    <header id="header">
+        <p id="name">oEmbed Test Page</p>
+        <div id="link_box">
+            <i id="link_icon" class="fas fa-link"></i>
+            <input id="input_link" type="text" name="url" placeholder="URL 을 입력해주세요.">
+            <input id="link_button" type="button" value="확인" onclick="dtt()"/>
+        </div>
+    </header>
+
+    <section id="container">
+        <div id="containerDiv">
+        </div>
+    </section>
+</div>
+</body>
+</html>
